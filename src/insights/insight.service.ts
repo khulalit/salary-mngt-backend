@@ -41,13 +41,28 @@ export class InsightsService {
         }));
     }
 
-    async getJobTitleInsights(): Promise<any[]> {
-        // TODO: Implement after writing tests
-        return [];
+    async getJobTitleInsights() {
+        const result = await this.prisma.employee.groupBy({
+            by: ['jobTitle'],
+            _count: { _all: true },
+            _min: { salary: true },
+            _max: { salary: true },
+            _avg: { salary: true },
+        });
+        return result.map(r => ({
+            jobTitle: r.jobTitle,
+            headcount: r._count._all,
+            minSalary: r._min.salary ?? 0,
+            maxSalary: r._max.salary ?? 0,
+            avgSalary: Math.round((r._avg.salary ?? 0) * 100) / 100,
+        }));
     }
 
-    async getAllInsights(): Promise<any> {
-        // TODO: Implement after writing tests
-        return null as any;
+    async getAllInsights() {
+        return {
+            global: await this.getGlobalInsights(),
+            byCountry: await this.getCountryInsights(),
+            byJobTitle: await this.getJobTitleInsights(),
+        };
     }
 }
