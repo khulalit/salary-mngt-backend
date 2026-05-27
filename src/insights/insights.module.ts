@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { InsightsService } from './insight.service';
+import { InsightsService } from './insights.service';
 import { InsightsController } from './insights.controller';
 import { PrismaService } from '../prisma/prisma.service';
 
