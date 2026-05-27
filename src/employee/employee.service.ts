@@ -30,7 +30,23 @@ export class EmployeeService {
     }
 
     async create(dto: CreateEmployeeDto) {
-
-        return {}
+        const data = {
+            fullName: dto.fullName,
+            email: dto.email,
+            jobTitle: dto.jobTitle,
+            country: dto.country,
+            salary: dto.salary,
+            department: dto.department,
+            hireDate: new Date(),
+        } as any;
+        try {
+            return await this.prisma.employee.create({ data });
+        } catch (error) {
+            // Prisma unique constraint violation (code P2002)
+            if (error?.code === 'P2002' && error?.meta?.target?.includes('email')) {
+                throw new ConflictException('User already exists');
+            }
+            throw error;
+        }
     }
 }
