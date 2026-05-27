@@ -1,0 +1,43 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role enum for auth
+enum Role {
+  HR_MANAGER
+  HR_ASSISTANT
+  HR_SPECIALIST
+  HR_RECRUITER
+}
+
+model Employee {
+  id         String   @id @default(uuid())
+  fullName   String
+  jobTitle   String
+  country    String
+  salary     Float
+  email      String   @unique
+  department String
+  hireDate   DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([country])
+  @@index([jobTitle])
+  @@index([country, jobTitle])
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role    @default(HR_ASSISTANT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
