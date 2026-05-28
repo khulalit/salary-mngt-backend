@@ -80,9 +80,11 @@ describe('EmployeeService', () => {
       where: {
         fullName: {
           contains: 'Jane',
+          mode: 'insensitive',
         },
         email: {
           contains: 'jane@example.com',
+          mode: 'insensitive',
         },
       },
     });
@@ -91,9 +93,11 @@ describe('EmployeeService', () => {
       where: {
         fullName: {
           contains: 'Jane',
+          mode: 'insensitive',
         },
         email: {
           contains: 'jane@example.com',
+          mode: 'insensitive',
         },
       },
     });
