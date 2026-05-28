@@ -8,14 +8,14 @@ const prisma = new PrismaClient();
 const COUNTRIES = [
   { name: 'United States', multiplier: 1.0 },
   { name: 'Canada', multiplier: 0.85 },
-  { name: 'United Kingdom', multiplier: 0.80 },
+  { name: 'United Kingdom', multiplier: 0.8 },
   { name: 'Germany', multiplier: 0.85 },
-  { name: 'India', multiplier: 0.30 },
+  { name: 'India', multiplier: 0.3 },
   { name: 'Singapore', multiplier: 0.95 },
-  { name: 'Australia', multiplier: 0.90 },
+  { name: 'Australia', multiplier: 0.9 },
   { name: 'France', multiplier: 0.75 },
-  { name: 'Japan', multiplier: 0.70 },
-  { name: 'Brazil', multiplier: 0.35 }
+  { name: 'Japan', multiplier: 0.7 },
+  { name: 'Brazil', multiplier: 0.35 },
 ];
 
 const DEPARTMENTS = {
@@ -24,36 +24,36 @@ const DEPARTMENTS = {
     { title: 'Senior Software Engineer', min: 110000, max: 170000 },
     { title: 'Engineering Manager', min: 130000, max: 200000 },
     { title: 'DevOps Engineer', min: 75000, max: 130000 },
-    { title: 'QA Engineer', min: 60000, max: 100000 }
+    { title: 'QA Engineer', min: 60000, max: 100000 },
   ],
   Sales: [
     { title: 'Sales Representative', min: 45000, max: 80000 },
     { title: 'Account Executive', min: 65000, max: 110000 },
-    { title: 'Sales Manager', min: 90000, max: 150000 }
+    { title: 'Sales Manager', min: 90000, max: 150000 },
   ],
   Marketing: [
     { title: 'Marketing Specialist', min: 50000, max: 85000 },
     { title: 'Marketing Manager', min: 80000, max: 130000 },
-    { title: 'SEO Analyst', min: 45000, max: 75000 }
+    { title: 'SEO Analyst', min: 45000, max: 75000 },
   ],
   HR: [
     { title: 'HR Specialist', min: 50000, max: 80000 },
     { title: 'HR Manager', min: 85000, max: 140000 },
-    { title: 'Recruiter', min: 45000, max: 80000 }
+    { title: 'Recruiter', min: 45000, max: 80000 },
   ],
   Finance: [
     { title: 'Accountant', min: 55000, max: 90000 },
     { title: 'Financial Analyst', min: 65000, max: 110000 },
-    { title: 'Finance Manager', min: 95000, max: 160000 }
+    { title: 'Finance Manager', min: 95000, max: 160000 },
   ],
   Product: [
     { title: 'Product Manager', min: 80000, max: 140000 },
-    { title: 'Senior Product Manager', min: 120000, max: 180000 }
+    { title: 'Senior Product Manager', min: 120000, max: 180000 },
   ],
   Design: [
     { title: 'UI/UX Designer', min: 60000, max: 110000 },
-    { title: 'Lead Designer', min: 100000, max: 160000 }
-  ]
+    { title: 'Lead Designer', min: 100000, max: 160000 },
+  ],
 };
 
 function getRandomElement<T>(array: T[]): T {
@@ -61,7 +61,9 @@ function getRandomElement<T>(array: T[]): T {
 }
 
 function getRandomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+  );
 }
 
 // Fisher-Yates Shuffle
@@ -75,7 +77,7 @@ function shuffle<T>(array: T[]): T[] {
 
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
-      array[currentIndex]
+      array[currentIndex],
     ];
   }
 
@@ -95,10 +97,20 @@ async function main() {
     process.exit(1);
   }
 
-  const firstNames = fs.readFileSync(firstNamesPath, 'utf8').split(/\r?\n/).map(n => n.trim()).filter(Boolean);
-  const lastNames = fs.readFileSync(lastNamesPath, 'utf8').split(/\r?\n/).map(n => n.trim()).filter(Boolean);
+  const firstNames = fs
+    .readFileSync(firstNamesPath, 'utf8')
+    .split(/\r?\n/)
+    .map((n) => n.trim())
+    .filter(Boolean);
+  const lastNames = fs
+    .readFileSync(lastNamesPath, 'utf8')
+    .split(/\r?\n/)
+    .map((n) => n.trim())
+    .filter(Boolean);
 
-  console.log(`Loaded ${firstNames.length} first names and ${lastNames.length} last names.`);
+  console.log(
+    `Loaded ${firstNames.length} first names and ${lastNames.length} last names.`,
+  );
   const totalCombinations = firstNames.length * lastNames.length;
   console.log(`Total possible unique full names: ${totalCombinations}`);
 
@@ -143,7 +155,9 @@ async function main() {
 
   // 4. Generate records
   const employeesToInsert: Prisma.EmployeeCreateInput[] = [];
-  const departmentsList = Object.keys(DEPARTMENTS) as Array<keyof typeof DEPARTMENTS>;
+  const departmentsList = Object.keys(DEPARTMENTS) as Array<
+    keyof typeof DEPARTMENTS
+  >;
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
   const today = new Date();
@@ -154,7 +168,7 @@ async function main() {
   for (let i = 0; i < namesToUse.length; i++) {
     const fullName = namesToUse[i];
     const [firstName, lastName] = fullName.split(' ');
-    
+
     // Create base email
     let emailBase = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`;
     let email = `${emailBase}@company.com`;
@@ -168,11 +182,13 @@ async function main() {
     const countryObj = getRandomElement(COUNTRIES);
     const department = getRandomElement(departmentsList);
     const jobTitleObj = getRandomElement(DEPARTMENTS[department]);
-    
+
     // Scale salary by job title range and country multiplier
-    const baseSalary = Math.random() * (jobTitleObj.max - jobTitleObj.min) + jobTitleObj.min;
-    const finalSalary = Math.round((baseSalary * countryObj.multiplier) / 100) * 100;
-    
+    const baseSalary =
+      Math.random() * (jobTitleObj.max - jobTitleObj.min) + jobTitleObj.min;
+    const finalSalary =
+      Math.round((baseSalary * countryObj.multiplier) / 100) * 100;
+
     const hireDate = getRandomDate(fiveYearsAgo, today);
 
     employeesToInsert.push({
@@ -182,28 +198,30 @@ async function main() {
       department,
       country: countryObj.name,
       salary: finalSalary,
-      hireDate
+      hireDate,
     });
   }
 
   // 5. Insert in chunks
   const CHUNK_SIZE = 500;
   console.log(`Inserting 10,000 employees in chunks of ${CHUNK_SIZE}...`);
-  
+
   for (let i = 0; i < employeesToInsert.length; i += CHUNK_SIZE) {
     const chunk = employeesToInsert.slice(i, i + CHUNK_SIZE);
     await prisma.employee.createMany({
-      data: chunk
+      data: chunk,
     });
   }
 
   const duration = (Date.now() - startTime) / 1000;
   const count = await prisma.employee.count();
-  console.log(`Successfully seeded ${count} employees in ${duration.toFixed(2)}s!`);
+  console.log(
+    `Successfully seeded ${count} employees in ${duration.toFixed(2)}s!`,
+  );
 }
 
 main()
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })
