@@ -1,3 +1,8 @@
+## MANGER accounts to test
+users: manager1@company.com,  manager2@company.com,  manager2@company.com
+coressponding passwords: password1, password2, password2
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
