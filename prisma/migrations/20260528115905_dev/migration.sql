@@ -1,25 +1,32 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('HR_MANAGER', 'HR_ASSISTANT', 'HR_SPECIALIST', 'HR_RECRUITER');
+
 -- CreateTable
 CREATE TABLE "Employee" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
     "jobTitle" TEXT NOT NULL,
     "country" TEXT NOT NULL,
-    "salary" REAL NOT NULL,
+    "salary" DOUBLE PRECISION NOT NULL,
     "email" TEXT NOT NULL,
     "department" TEXT NOT NULL,
-    "hireDate" DATETIME NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "hireDate" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
-    "role" TEXT NOT NULL DEFAULT 'HR_ASSISTANT',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "role" "Role" NOT NULL DEFAULT 'HR_ASSISTANT',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
