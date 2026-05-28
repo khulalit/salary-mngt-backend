@@ -1,6 +1,13 @@
-## MANGER accounts to test
-users: manager1@company.com,  manager2@company.com,  manager2@company.com
+## Hr manager accounts for test
+| user    | password |
+| -------- | ------- |
+| manager1@company.com | password1 |
+| manager2@company.com | password2 |
+| manager3@company.com | password3 |
+
+users: manager1@company.com,  manager2@company.com,  manager2@company.com  
 coressponding passwords: password1, password2, password2
+---
 
 
 <p align="center">
