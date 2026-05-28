@@ -25,30 +25,35 @@ export class EmployeeService {
       if (filters.name) {
         where.fullName = {
           contains: filters.name,
+          mode: 'insensitive',
         };
       }
 
       if (filters.email) {
         where.email = {
           contains: filters.email,
+          mode: 'insensitive',
         };
       }
 
       if (filters.jobTitle) {
         where.jobTitle = {
           contains: filters.jobTitle,
+          mode: 'insensitive',
         };
       }
 
       if (filters.country) {
         where.country = {
           equals: filters.country,
+          mode: 'insensitive',
         };
       }
 
       if (filters.department) {
         where.department = {
           equals: filters.department,
+          mode: 'insensitive',
         };
       }
     }
